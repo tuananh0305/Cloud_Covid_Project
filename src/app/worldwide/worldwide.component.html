@@ -1,0 +1,137 @@
+
+<div class="text-center">
+    <p style="font-size:50px;"><img src="https://firebasestorage.googleapis.com/v0/b/covid-7b73c.appspot.com/o/covid-icon.png?alt=media&token=32767466-64ec-43f1-8290-d67a363a8c80" width="50px"> COVID-19</p>
+</div>
+
+<p class="text-center" style="font-size:40px; color:dimgrey">Live Updates and Statistics</p>
+<p style="font-size:30px; background-color:rgb(242, 248, 248);">Corona Virus Summary Worldwide</p>
+
+<table class="table table-bordered">
+    <tr class="table-warning">
+        <td>Total Cases</td>
+        <td>{{summaryData?.Global?.TotalConfirmed | number}}</td>
+    </tr>
+    <tr class="table-warning">
+        <td>New Cases</td>
+        <td>{{summaryData?.Global?.NewConfirmed | number}}</td>
+    </tr>
+    <tr class="table-warning">
+        <td>Active Cases</td>
+        <td>{{(summaryData?.Global?.TotalConfirmed - summaryData?.Global?.TotalRecovered) | number}}</td>
+    </tr>
+
+    <tr class="table-primary">
+        <td>Total Recovered</td>
+        <td>{{summaryData?.Global?.TotalRecovered | number}} </td>
+    </tr>
+    <tr class="table-primary">
+        <td>New Recovered</td>
+        <td>{{summaryData?.Global?.NewRecovered | number}}</td>
+    </tr>
+    <tr class="table-primary">
+        <td>Recovery Rate</td>
+        <td>{{(summaryData?.Global?.TotalRecovered / summaryData?.Global?.TotalConfirmed)*100 | number}}% </td>
+    </tr>
+
+    <tr class="table-danger">
+        <td>Total Deaths</td>
+        <td>{{summaryData?.Global?.TotalDeaths | number}}</td>
+    </tr>
+    <tr class="table-danger">
+        <td>New Deaths</td>
+        <td>{{summaryData?.Global?.NewDeaths | number}}</td>
+    </tr>
+    <tr class="table-danger">
+        <td>Mortality Rate</td>
+        <td>{{(summaryData?.Global?.TotalDeaths / summaryData?.Global?.TotalConfirmed)*100 | number}}%</td>
+    </tr>
+
+</table>
+
+<p style="font-size:30px; background-color:rgb(242, 248, 248); margin-top: 50px;">Corona Virus Cases Distribution Worldwide</p>
+<div style="display: block;" *ngIf="pieChartReady">
+    <canvas baseChart 
+      [data]="pieChartData" 
+      [labels]="pieChartLabels" 
+      [chartType]="pieChartType"
+      [options]="pieChartOptions"
+      [plugins]="pieChartPlugins"
+      [legend]="pieChartLegend">
+    </canvas>
+</div>
+
+<p style="font-size:30px; background-color:rgb(242, 248, 248); margin-top: 50px;">Daily Corona Virus Cases Worldwide</p>
+<div style="display: block;" *ngIf="barChartReady">
+    <canvas baseChart 
+      [datasets]="barChartData"
+      [labels]="barChartLabels"
+      [options]="barChartOptions"
+      [plugins]="barChartPlugins"
+      [legend]="barChartLegend"
+      [chartType]="barChartType">
+    </canvas>
+  </div>
+
+<p style="font-size:30px; background-color:rgb(242, 248, 248); margin-top: 50px;">Total Corona Virus Cases Worldwide</p>
+<div style="display: block;" *ngIf="lineChartReady">
+  <canvas baseChart width="400" height="400"
+    [datasets]="lineChartData"
+    [labels]="lineChartLabels"
+    [options]="lineChartOptions"
+    [colors]="lineChartColors"
+    [legend]="lineChartLegend"
+    [chartType]="lineChartType"
+    [plugins]="lineChartPlugins">
+  </canvas>
+</div>
+
+  <!-- <table id="tableSortExample" mdbTable class="z-depth-1">
+    <thead>
+      <tr>
+        <th *ngFor="let head of headsTable; let i = index" aria-controls="tableSortExample" scope="col" [mdbTableSort]="countriesData" [sortBy]="headsTable[i]">{{head | titlecase}}
+          <mdb-icon fas icon="sort"></mdb-icon>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let country of countriesData; let i = index">
+        <td class="table-secondary" 
+        [routerLink]="['/country', country.Slug]">{{country.Country}}</td>
+        <td class="table-warning">{{country.NewConfirmed | number}}</td>
+        <td class="table-warning">{{country.TotalConfirmed | number}}</td>
+        <td class="table-primary">{{country.NewRecovered | number}}</td>
+        <td class="table-primary">{{country.TotalRecovered | number}}</td>
+        <td class="table-danger">{{country.NewDeaths | number}}</td>
+        <td class="table-danger">{{country.TotalDeaths | number}}</td>
+      </tr>
+    </tbody>
+  </table> -->
+
+<div class="same-row table-data">
+    <p style="font-size:30px; background-color:rgb(242, 248, 248); margin-top: 50px;">Corana Virus Cases by Country</p>
+    <table class="table table-bordered">
+        <tr>
+            <td class="table-secondary"> Country</td>
+            <td class="table-warning">New Cases</td>
+            <td class="table-warning">Total Cases</td>
+            <td class="table-primary">New Recoveries</td>
+            <td class="table-primary">Total Recoveries</td>
+            <td class="table-danger">New Deaths</td>
+            <td class="table-danger">Total Deaths</td>
+        </tr>
+        <tr *ngFor="let country of countriesData">
+            <td class="table-secondary" 
+            [routerLink]="['/country', country.Slug]">{{country.Country}}</td>
+            <td class="table-warning">{{country.NewConfirmed | number}}</td>
+            <td class="table-warning">{{country.TotalConfirmed | number}}</td>
+            <td class="table-primary">{{country.NewRecovered | number}}</td>
+            <td class="table-primary">{{country.TotalRecovered | number}}</td>
+            <td class="table-danger">{{country.NewDeaths | number}}</td>
+            <td class="table-danger">{{country.TotalDeaths | number}}</td>
+        </tr>
+    </table>
+</div>
+
+<footer class="text-center" style="font-size:20px; background-color:rgb(242, 248, 248);">
+  <p>Data Source: <a href="https://covid19api.com/">COVID-19 API/ Johns Hopkins CSSE</a></p>
+</footer>
